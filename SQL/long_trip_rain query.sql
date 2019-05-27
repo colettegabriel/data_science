@@ -1,14 +1,18 @@
+WITH rainy AS (
+	SELECT
+		date
+	FROM weather
+	WHERE events = 'Rain'
+	GROUP BY date)
+
 SELECT
-	 MAX(trips.duration) AS max_trip_time
-	 , DATE(trips.end_date)
+	DATE(trips.end_date)
+	, MAX(trips.duration) AS max_trip_time
+
 	
-FROM trips
+FROM rainy
 
-JOIN weather ON
-	DATE(weather.date) = DATE(trips.end_date)
+JOIN trips 
+ON DATE(rainy.date) = DATE(trips.end_date)
 
-WHERE weather.events = 'Rain'
-
-GROUP BY 2
-
-ORDER BY 1 DESC
+GROUP BY 1
